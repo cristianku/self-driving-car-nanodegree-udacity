@@ -1,4 +1,4 @@
-**Finding Lane Lines on the Road**
+﻿**Finding Lane Lines on the Road**
 ==================================
 
 ###  
@@ -37,18 +37,20 @@ and high_threshold = 30 \* 3 = 90:
 And using the cv2.HoughLinesP , lines detection, detect all the lines using
 
 the following parameters:
+```ruby
 
-rho = 2
+  rho = 2
 
-theta = np.pi/180 \# in degree --\> we choose 1 degree
+  theta = np.pi/180 \# in degree --\> we choose 1 degree
 
-threshold = 15  \#--\> meaning at least 15 points in
+  threshold = 15  \#--\> meaning at least 15 points in
 
-\#    image space need to be associated with each line segment
+  \#    image space need to be associated with each line segment
 
-min_line_len = 30
+  min_line_len = 30
 
-max_line_gap = 20
+  max_line_gap = 20
+```
 
 ![](line_image.jpg)
 
