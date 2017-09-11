@@ -328,4 +328,4 @@ def calc_vertices( img):
 
 **See the result here:**
 
-[test_videos/challenge.mp4](test_videos/challenge.mp4)
+<iframe width="854" height="480" src="test_videos/challenge.mp4" frameborder="0" allowfullscreen></iframe>
