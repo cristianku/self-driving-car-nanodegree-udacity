@@ -22,7 +22,7 @@ For this purpose I am using the provided **grayscale** function.
 
 It uses OpenCV :
 
-`cv2.cvtColor(img, cv2.COLOR_RGB2GRAY) `
+`cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)`
 
 ![](writeup_images/gray.jpg)
 
@@ -54,8 +54,8 @@ edge pixel, if a pixel value is lower than low_threshold is is simply removed
 
 ### 3. Image Crop: using a mask to crop only the interested area:
 
-We crop a well defined portion of** 1-layer image ( 1 color ) ** and fill the
-remaining parts of image with black color. This portion depends on which
+We crop a well defined portion of\*\* 1-layer image ( 1 color ) \*\* and fill
+the remaining parts of image with black color. This portion depends on which
 position the camera is mounted. So it works in our example, but it can be
 re-tuned for other cameras positions. Here the provided **region_of_interest**
 function is used.
@@ -76,18 +76,17 @@ Here the Parameters used:
 
 `#Line detection parameters using Hough space`
 
-`    rho = 1`
+`rho = 1`
 
-`    theta = np.pi/180 # in degree --> we choose 1 degree`
+`theta = np.pi/180 # in degree --> we choose 1 degree`
 
-`    threshold = 15  #--> meaning at least 15 points in `
+`threshold = 15  #--> meaning at least 15 points in`
 
-`                    #    image space need to be associated with each line
-segment`
+`#    image space need to be associated with each line segment`
 
-`    min_line_len = 30`
+`min_line_len = 30`
 
-`    max_line_gap = 20`
+`max_line_gap = 20`
 
  
 
@@ -126,19 +125,19 @@ You can see the result in [test_images_output](test_images_output) folder:
 
  
 
-**TEST ON **[solidWhiteRight.mp4]**  VIDEO**
+**TEST ON** [solidWhiteRight.mp4]\*\* VIDEO\*\*
 --------------------------------------------
 
 In order to test on Videos, a new function containing the Pipeline is defined:
 **process_image(image).**
 
-To read from a .mp4 video the  library moviepy.editor is used:
+To read from a .mp4 video the library moviepy.editor is used:
 
 from **moviepy.editor** import **VideoFileClip**
 
  
 
-Then to read the Video:  **clip1**` =
+Then to read the Video: **clip1**`=
 VideoFileClip("test_videos/solidWhiteRight.mp4")`
 
 A new output Video clip is created with following command:
@@ -146,15 +145,15 @@ A new output Video clip is created with following command:
 **white_clip** = clip1.fl_image(process_image)
 
 The argument of **fl_image** is the function **process_image** that **I have
-implemented **with my own code, and containing the PIPELINE described above
+implemented** with my own code, and containing the PIPELINE described above
 
  
 
-The first test is on the video :[test_videos/solidWhiteRight.mp4
-](test_videos/solidWhiteRight.mp4)
+The first test is on the video
+:[test_videos/solidWhiteRight.mp4](test_videos/solidWhiteRight.mp4)
 
-And the **output result:
-**[test_videos_output/solidWhiteRight.mp4](test_videos_output/solidWhiteRight.mp4)
+And the **output result:**
+[test_videos_output/solidWhiteRight.mp4](test_videos_output/solidWhiteRight.mp4)
 
  
 
@@ -162,7 +161,7 @@ And the **output result:
 ------------------------------------------------------
 
 **Here I try to define a line to run the full length of the visible lane based
-on the line segments  identified with the Hough Transform.**
+on the line segments identified with the Hough Transform.**
 
  
 
@@ -174,18 +173,18 @@ on the line segments  identified with the Hough Transform.**
 
 `slope, yint = np.polyfit((x1, x2), (y1, y2), 1)`
 
-I can now check if the  slope is between ( abs )  .35 and .85, to remove lines
+I can now check if the slope is between ( abs ) .35 and .85, to remove lines
 that are not, probably, lane lines.
 
  
 
 ### 2. Based on this slope divide the segments into left lane segments and right lane segments:
 
-`if slope > 0: `
+`if slope > 0:`
 
 `# right lines`
 
-`else `
+`else`
 
 `# left lines`
 
@@ -208,7 +207,6 @@ for x in range(x1, x2):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                       right_lane_y.append(y)
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ### 3. Using Polyfit calculate the Linear Regression between al of this points ( obviously divided into left and right line )
@@ -217,7 +215,7 @@ for x in range(x1, x2):
 slope, intercept = np.polyfit(right_lane_y, right_lane_x, 1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-### 3. Calculate the remainin part of each lane line until the **bottom** of the image  
+### 3. Calculate the remainin part of each lane line until the **bottom** of the image
 
 Note that in previous **polyfit** I have **inverted the y/x linear** fit because
 I wanted to calculate the bottom x -position starting the well-known y-position
@@ -265,10 +263,10 @@ I wanted to calculate the bottom x -position starting the well-known y-position
 
  
 
-**TEST ON **solidYellowLeft.mp4**  VIDEO**
+**TEST ON** solidYellowLeft.mp4\*\* VIDEO\*\*
 ------------------------------------------
 
-This video shows the **STABILITY ** of the drawed lined using the modified
+This video shows the **STABILITY**  of the drawed lined using the modified
 **Draw_line** function
 
 Input video: [test_videos/solidYellowLeft.mp4](test_videos/solidYellowLeft.mp4)
@@ -328,4 +326,4 @@ def calc_vertices( img):
 
 **See the result here:**
 
-<iframe width="854" height="480" src="test_videos/challenge.mp4" frameborder="0" allowfullscreen></iframe>
+[test_videos/challenge.mp4](test_videos/challenge.mp4)
