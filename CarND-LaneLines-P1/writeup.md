@@ -30,7 +30,7 @@ It uses OpenCV :
 
 ### 2. Gaussian smoothing
 
-Using Gaussian filtering with Kernel = 5 pixels to smooth the image
+Using Gaussian filtering with Kernel = 3 pixels to smooth the image
 
 and remove unuseful details
 
@@ -44,8 +44,22 @@ Canny filter detect edges calculating the derivatives of the color change
 between point to point. When the derivative is increasing rapidly, then an edge
 will be detected
 
-I can use the Canny filter to detect image Edges, using a low_threshold = 30 and
-high_threshold = 50 \* 3 = 150 ( three times the low as Reccomended )
+I can use the Canny filter to detect image Edges
+
+To Calculate the low_threshold and high_threshold , I am now taking the Median
+Value of the Gray image and then I apply the formula:
+
+ 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+low threshold  = 0.66*[mean value] 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+high threshold = 1.33*[mean value]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
 
 If a pixel value is greater then the high_threshold it is marked as a strong
 edge pixel, if a pixel value is lower than low_threshold is is simply removed
@@ -80,13 +94,13 @@ Here the Parameters used:
 
 `theta = np.pi/180 # in degree --> we choose 1 degree`
 
-`threshold = 15  #--> meaning at least 15 points in`
+`threshold = 60 #--> meaning at least 15 points in`
 
 `#    image space need to be associated with each line segment`
 
-`min_line_len = 30`
+`min_line_len = 100`
 
-`max_line_gap = 20`
+`max_line_gap = 100`
 
  
 
@@ -126,7 +140,7 @@ You can see the result in [test_images_output](test_images_output) folder:
  
 
 **TEST ON** [solidWhiteRight.mp4]\*\* VIDEO\*\*
---------------------------------------------
+-----------------------------------------------
 
 In order to test on Videos, a new function containing the Pipeline is defined:
 **process_image(image).**
@@ -264,9 +278,9 @@ I wanted to calculate the bottom x -position starting the well-known y-position
  
 
 **TEST ON** solidYellowLeft.mp4\*\* VIDEO\*\*
-------------------------------------------
+---------------------------------------------
 
-This video shows the **STABILITY**  of the drawed lined using the modified
+This video shows the **STABILITY** of the drawed lined using the modified
 **Draw_line** function
 
 Input video: [test_videos/solidYellowLeft.mp4](test_videos/solidYellowLeft.mp4)
@@ -285,45 +299,49 @@ Output video result:
 calculation:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Need to change the Mask of the image:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def calc_vertices( img):
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     imshape = img.shape
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    vertices = np.array([[(.25*imshape[1],imshape[0]*.8),     # <-- bottom left
+                      (.50*imshape[1] ,  .6*imshape[0]),      # <-- top left
+                      (.55*imshape[1],  .6*imshape[0]),       # <-- top right
+                    (.9*imshape[1],imshape[0]*.8)]], dtype=np.int32)  # <-- bottom right
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    vertices = np.array([[(.1*imshape[1],imshape[0]*.8),      # <-- bottom left
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      (.47*imshape[1] ,  .6*imshape[0]),      # <-- top left
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                      (.55*imshape[1],  .6*imshape[0]),        # <-- top right
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                    (.95*imshape[1],imshape[0]*.8)]], dtype=np.int32)  # <-- bottom right
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     return  vertices
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **See the result here:**
 
 [test_videos/challenge.mp4](test_videos/challenge.mp4)
+
+ 
+
+**SHORTCOMINGS​**
+----------------
+
+My Pipeline works well on straight line, but will not work well for curved
+lines.
+
+When Hough doesnt return any lines, instead of drawing nothing, it should use
+the previous lane line ( \* resolved )
+
+The low and high threshold in Canny filter could be automatically detected ( \*
+resolved )
+
+**Suggestions for improving this algorithm**
+--------------------------------------------
+
+This algorythm has already been improved regarding:
+
+-   automatic Low and High threshold in Canny filter calculation [see
+    here](http://www.kerrywong.com/2009/05/07/canny-edge-detection-auto-thresholding/)
+
+-   “memory” --\> the previous Lane is stored in order to :
+
+    -   use it in case of absence in the current
+
+    -   averaging with the current line
+
+This algorythm has not been improved regarding the curved line, need some more
+study here :[ROBUST AND REAL TIME DETECTION OF CURVY
+LANES](http://airccj.org/CSCP/vol5/csit53211.pdf)

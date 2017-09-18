@@ -37,7 +37,7 @@ List of the files
 
 **P1.ipynb** contains the Program code to run ( how to run see below )
 
-**P1.md**  MD generated from Jupyter Notebook containing the Code execution
+**P1.html**  Generated from Jupyter Notebook containing the Code execution
 
 **writeup.md** contains the explanation how the solutions to the problem has
 been resolved.
@@ -50,7 +50,6 @@ List of the folders
 **Test_images** contains the input images for the processing of lane detection
 
 **Test_images_output** is the folder containing the processed images using
-**P1.ipynb**
 
  
 
@@ -77,7 +76,7 @@ if you haven't already.
 
 **Step 3:** Open Jupyter Notebook
 
-`> jupyter notebook`**P1.ipynb**
+`> jupyter notebook `**P1.ipynb**
 
 A browser window will appear showing the contents of the current directory.
 
